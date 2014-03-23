@@ -19,10 +19,11 @@ bool isWhiteSpace(char *originalString);
 IndexPair *createPair(char *word, int lineNumber);
 void copyIndexPairArray(IndexPair *source[], IndexPair *destination[],
 						int numPairs);
-char getFirstLetter(char *word);
 void swapIndexPairs(IndexPair *first, IndexPair *second);
 int strCompare(char *word, char *possibleMatch);
+int strEquals(char *word, char *possibleMatch);
 void sortIndexPairArray(IndexPair *sort[], int numPairs);
+void displayIndex(IndexPair *sorted[], int numPairs);
 
 int main() {
 	char *fileLines[100];
@@ -35,13 +36,12 @@ int main() {
 		cout << sortedPairArray[i]->word << ", " << sortedPairArray[i]->lineNumber << endl;
 	}
 	cout << endl;
-	char *testA = "HiBro";
-	char *testB = "HeyBro";
-	char *testC = "HiBro";
 	sortIndexPairArray(sortedPairArray, numberOfPairs);
 	for (int h = 0; h < numberOfPairs; h++) {
 		cout << sortedPairArray[h]->word << ", " << sortedPairArray[h]->lineNumber << endl;
 	}
+	cout << endl;
+	displayIndex(sortedPairArray, numberOfPairs);	
 	return 0;
 }
 
@@ -112,6 +112,11 @@ void sortIndexPairArray(IndexPair *sort[], int numPairs) {
 	}
 }
 
+void displayIndex(IndexPair *sorted[], int numPairs) {
+	cout << "Words" << "\t\t" << "Lines" << endl;
+	cout << sorted[0]->word << "\t\t" << sorted[0]->lineNumber << endl;
+}
+
 char *getFileName() {
 	char file[81];
 	cout << "Please enter the name of the file" << endl << endl;
@@ -137,10 +142,6 @@ void copyIndexPairArray(IndexPair *source[], IndexPair *destination[],
 	for (int i = 0; i < numPairs; i++) {
 		destination[i] = source[i];
 	}
-}
-
-char getFirstLetter(char *word) {
-	return *word;
 }
 
 void swapIndexPairs(IndexPair *first, IndexPair *second) {
@@ -198,6 +199,17 @@ int strCompare(char *firstWord, char *secondWord) {
 		return 1;
 	}
 	return 0;
+}
+
+int strEquals(char *word, char *possibleMatch) {
+	while (*word || *possibleMatch) {
+		if (*word != *possibleMatch) {
+			return 0;
+		}
+		word++;
+		possibleMatch++;
+	}
+	return 1;
 }
 
 int strLength(char * word) {
