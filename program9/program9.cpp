@@ -32,15 +32,7 @@ int main() {
 	int lines = fillStringArray(fileLines);
 	int numberOfPairs = fillIndexArray(lines, fileLines, pairArray);
 	copyIndexPairArray(pairArray, sortedPairArray, numberOfPairs);
-	for (int i = 0; i < numberOfPairs; i++) {
-		cout << sortedPairArray[i]->word << ", " << sortedPairArray[i]->lineNumber << endl;
-	}
-	cout << endl;
 	sortIndexPairArray(sortedPairArray, numberOfPairs);
-	for (int h = 0; h < numberOfPairs; h++) {
-		cout << sortedPairArray[h]->word << ", " << sortedPairArray[h]->lineNumber << endl;
-	}
-	cout << endl;
 	displayIndex(sortedPairArray, numberOfPairs);	
 	return 0;
 }
@@ -114,7 +106,26 @@ void sortIndexPairArray(IndexPair *sort[], int numPairs) {
 
 void displayIndex(IndexPair *sorted[], int numPairs) {
 	cout << "Words" << "\t\t" << "Lines" << endl;
-	cout << sorted[0]->word << "\t\t" << sorted[0]->lineNumber << endl;
+	cout << sorted[0]->word << "\t\t" << sorted[0]->lineNumber;
+	for (int i = 1; i < numPairs; i++) {
+		char *firstWord = sorted[i - 1]->word;
+		char *secondWord = sorted[i]->word;
+		if (strEquals(secondWord, firstWord)) {
+			if (sorted[i]->lineNumber != sorted[i - 1]->lineNumber) {
+				cout << ", " << sorted[i]->lineNumber;
+			}
+		} else {
+			cout << endl;
+			cout << secondWord;
+			if (strLength(secondWord) >= 8) {
+				cout << "\t";
+			} else {
+				cout << "\t\t";
+			}
+			cout<<sorted[i]->lineNumber;
+		}
+	}
+	cout << endl;
 }
 
 char *getFileName() {
