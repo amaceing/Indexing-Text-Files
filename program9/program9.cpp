@@ -21,7 +21,7 @@ void copyIndexPairArray(IndexPair *source[], IndexPair *destination[],
 						int numPairs);
 char getFirstLetter(char *word);
 void swapIndexPairs(IndexPair *first, IndexPair *second);
-bool strEquals(char *word, char *possibleMatch);
+int strCompare(char *word, char *possibleMatch);
 void sortIndexPairArray(IndexPair *sort[], int numPairs);
 
 int main() {
@@ -35,12 +35,10 @@ int main() {
 		cout << sortedPairArray[i]->word << ", " << sortedPairArray[i]->lineNumber << endl;
 	}
 	cout << endl;
-	sortIndexPairArray(sortedPairArray, numberOfPairs);
 	char *testA = "HiBro";
 	char *testB = "HeyBro";
 	char *testC = "HiBro";
-	cout << strEquals(testA, testB) << endl;
-	cout << strEquals(testA, testC) << endl;;
+	sortIndexPairArray(sortedPairArray, numberOfPairs);
 	for (int h = 0; h < numberOfPairs; h++) {
 		cout << sortedPairArray[h]->word << ", " << sortedPairArray[h]->lineNumber << endl;
 	}
@@ -103,11 +101,9 @@ void sortIndexPairArray(IndexPair *sort[], int numPairs) {
 			for (index = 0; index < last; index++) {
 				char *firstWord = sort[index]->word;
 				char *secondWord = sort[index + 1]->word;
-				IndexPair *first = sort[index];
-				IndexPair *second = sort[index + 1];
-				bool equality = strEquals(firstWord, secondWord);
-				if (!equality) {
-					swapIndexPairs(first, second);
+				int compare = strCompare(firstWord, secondWord);
+				if (compare == 1) {
+					swapIndexPairs(sort[index], sort[index+1]);
 					sorted = 0;
 				}
 			}
@@ -141,20 +137,6 @@ void copyIndexPairArray(IndexPair *source[], IndexPair *destination[],
 	for (int i = 0; i < numPairs; i++) {
 		destination[i] = source[i];
 	}
-}
-
-bool stringEquals(char *word, char *possibleMatch) {
-	bool equality = false;
-	int lengthOfWord = strLength(word);
-	int lengthOfPossibleMatch = strLength(possibleMatch);
-	if (lengthOfWord == lengthOfPossibleMatch) {
-		for (int i = 0; i < lengthOfWord; i++) {
-			equality = (*word == *possibleMatch);
-			word++;
-			possibleMatch++;
-		}
-	}
-	return equality;
 }
 
 char getFirstLetter(char *word) {
@@ -205,20 +187,17 @@ char *parseString(char *originalString, int count) {
 	return baseWordForPair;
 }
 
-bool strEquals(char *word, char *possibleMatch) {
-	bool equality = true;
-	int wordLength = strLength(word);
-	int possMatchLength = strLength(possibleMatch);
-	if (wordLength != possMatchLength) {
-		equality = false;
-	} else {
-		for (int i = 0; i < wordLength; i++) {
-			if (*word != *possibleMatch) {
-				equality = false;
-			}
-		}
+int strCompare(char *firstWord, char *secondWord) {
+	while (*firstWord && *secondWord && (*firstWord == *secondWord)) {
+		firstWord++;
+		secondWord++;
 	}
-	return equality;
+	if (*firstWord < *secondWord) {
+		return -1;
+	} else if (*firstWord > *secondWord) {
+		return 1;
+	}
+	return 0;
 }
 
 int strLength(char * word) {
