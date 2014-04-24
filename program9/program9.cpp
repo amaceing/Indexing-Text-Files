@@ -1,3 +1,7 @@
+//Anthony Mace CSC240 3/26/14
+//This program indexes a text file and
+//displays the words and which lines they appear on
+
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -8,6 +12,9 @@ struct IndexPair {
 };
 
 char *getFileName();
+char repeatProg();
+void displayIntro();
+void quitProg();
 void strCopy(char string[], char *pointer);
 int strLength(char * word);
 int fillStringArray(char *linesInFile[]);
@@ -26,14 +33,20 @@ void sortIndexPairArray(IndexPair *sort[], int numPairs);
 void displayIndex(IndexPair *sorted[], int numPairs);
 
 int main() {
-	char *fileLines[100];
-	IndexPair *pairArray[1000];
-	IndexPair *sortedPairArray[1000];
-	int lines = fillStringArray(fileLines);
-	int numberOfPairs = fillIndexArray(lines, fileLines, pairArray);
-	copyIndexPairArray(pairArray, sortedPairArray, numberOfPairs);
-	sortIndexPairArray(sortedPairArray, numberOfPairs);
-	displayIndex(sortedPairArray, numberOfPairs);	
+	char repeat;
+	displayIntro();
+	do {
+		char *fileLines[100];
+		IndexPair *pairArray[1000];
+		IndexPair *sortedPairArray[1000];
+		int lines = fillStringArray(fileLines);
+		int numberOfPairs = fillIndexArray(lines, fileLines, pairArray);
+		copyIndexPairArray(pairArray, sortedPairArray, numberOfPairs);
+		sortIndexPairArray(sortedPairArray, numberOfPairs);
+		displayIndex(sortedPairArray, numberOfPairs);
+		repeat = repeatProg();
+	} while (repeat == 'y' || repeat == 'Y');
+	quitProg();
 	return 0;
 }
 
@@ -229,4 +242,21 @@ int strLength(char * word) {
 		word++;
 	}
 	return (word - base);
+}
+
+char repeatProg() {
+	char repeat;
+	cout << endl << "Would you like to continue the program?" << endl;
+	cout << "Enter y for yes or n for no: ";
+	cin >> repeat;
+	cout << endl;
+	return repeat;
+}
+
+void displayIntro() {
+	cout << "This program allows you to index a text file" << endl << endl;
+}
+
+void quitProg() {
+	cout << endl << "You have quit the program" << endl;
 }
